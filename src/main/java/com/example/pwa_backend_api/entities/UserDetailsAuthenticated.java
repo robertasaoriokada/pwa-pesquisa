@@ -1,30 +1,31 @@
 package com.example.pwa_backend_api.entities;
 
 import java.util.Collection;
+import java.util.List;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-public class UserDetailsImplem implements UserDetails{
-  private User user;
-  
-  public UserDetailsImplem(User user){
+public class UserDetailsAuthenticated implements UserDetails{
+  private final User user;
+
+  public UserDetailsAuthenticated(User user){
     this.user = user;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    throw new UnsupportedOperationException("Unimplemented method 'getAuthorities'");
+    return List.of(() -> "read");
   }
 
   @Override
   public String getPassword() {
-    throw new UnsupportedOperationException("Unimplemented method 'getPassword'");
+    return user.getPassword();
   }
 
   @Override
   public String getUsername() {
-    throw new UnsupportedOperationException("Unimplemented method 'getUsername'");
+    return user.getName();
   }
   
 }
