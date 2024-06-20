@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/forms")
 public class FormsController {
   
-  @GetMapping("hello")
+  @GetMapping
   public ResponseEntity<String> hello() {
     return ResponseEntity.ok().build();
   }

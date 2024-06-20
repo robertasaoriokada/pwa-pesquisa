@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.pwa_backend_api.entities.UserDetailsAuthenticated;
 import com.example.pwa_backend_api.repositories.UserRepo;
 
 import jakarta.servlet.FilterChain;
@@ -28,7 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter{
     String token = this.recoverToken(request);
     if(token != null){
       String email = tokenService.validateToken(token);
-      UserDetailsAuthenticated user = (UserDetailsAuthenticated) userRepo.findByEmail(email);
+      UserDetails user = userRepo.findByEmail(email);
       Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }

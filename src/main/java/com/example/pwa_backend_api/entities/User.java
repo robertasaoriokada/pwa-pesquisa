@@ -2,12 +2,16 @@ package com.example.pwa_backend_api.entities;
 
 import java.sql.Timestamp;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.List;
 import java.util.Set;
+
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -16,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "USERS")
-public class User{
+public class User implements UserDetails{
   @Id
   @GeneratedValue(strategy = GenerationType.UUID)
   private String id;
@@ -120,6 +124,20 @@ public class User{
 
   public void setUpdated_at(Timestamp updated_at) {
     this.updated_at = updated_at;
+  }
+
+   @Override
+  public Collection<? extends GrantedAuthority> getAuthorities() {
+      if (role == UserRole.ADMIN) {
+          return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+      } else {
+          return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+      }
+  }
+
+  @Override
+  public String getUsername() {
+      return email;
   }
 }
 

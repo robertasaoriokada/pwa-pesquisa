@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.example.pwa_backend_api.dtos.RegisterDTO;
 import com.example.pwa_backend_api.entities.User;
-import com.example.pwa_backend_api.entities.UserDetailsAuthenticated;
 import com.example.pwa_backend_api.repositories.UserRepo;
 import com.example.pwa_backend_api.securityconfiguration.TokenService;
 

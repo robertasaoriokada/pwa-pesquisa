@@ -42,4 +42,9 @@ public class AuthController {
   public ResponseEntity<java.util.List<User>> listUsers(){
     return ResponseEntity.ok(authService.listUsers());
   }
+
+  @GetMapping("/hello")
+  public ResponseEntity<String> parabens(){
+    return ResponseEntity.ok("EBAAAAAAAAAA");
+  }
 }
