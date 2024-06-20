@@ -2,6 +2,9 @@ package com.example.pwa_backend_api.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,21 +23,23 @@ import com.example.pwa_backend_api.services.AuthService;
 public class AuthController {
   @Autowired
   AuthService authService;
+  @Autowired 
+  AuthenticationManager authenticationManager;
   
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDTO> login(@RequestBody @Validated AuthenticationDTO data){
-    return ResponseEntity.ok(new LoginResponseDTO(authService.login(data)));
+    UsernamePasswordAuthenticationToken usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
+    Authentication auth = authenticationManager.authenticate(usernamePassword);
+    return ResponseEntity.ok(new LoginResponseDTO(authService.login(auth)));
   }
 
   @PostMapping("/register")
   public ResponseEntity<String> register(@RequestBody @Validated RegisterDTO data){
-    authService.register(data);
-    return ResponseEntity.ok().build();
+    return authService.register(data);
   }
 
   @GetMapping("/listUsers")
   public ResponseEntity<java.util.List<User>> listUsers(){
-    var lista = authService.listUsers();
-    return ResponseEntity.ok(lista);
+    return ResponseEntity.ok(authService.listUsers());
   }
 }

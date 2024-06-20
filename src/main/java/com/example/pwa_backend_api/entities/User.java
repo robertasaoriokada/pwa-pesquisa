@@ -39,13 +39,9 @@ public class User{
   @Column(name = "updated_at")
   private Timestamp updated_at;
 
-  public Set<Forms> getForms() {
-    return forms;
-  }
+  @Column(name = "role")
+  private UserRole role;
 
-  public void setForms(Set<Forms> forms) {
-    this.forms = forms;
-  }
 
   User(){
   }
@@ -57,6 +53,22 @@ public class User{
     this.forms = null;
     this.created_at = new Timestamp(Calendar.getInstance().getTimeInMillis());
     this.updated_at = new Timestamp(Calendar.getInstance().getTimeInMillis());
+  }
+
+  public UserRole getRole() {
+    return role;
+  }
+
+  public void setRole(UserRole role) {
+    this.role = role;
+  }
+
+  public Set<Forms> getForms() {
+    return forms;
+  }
+
+  public void setForms(Set<Forms> forms) {
+    this.forms = forms;
   }
 
   public String getId() {

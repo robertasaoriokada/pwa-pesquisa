@@ -9,7 +9,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import com.example.pwa_backend_api.connection.EntityManagerProvider;
 import com.example.pwa_backend_api.entities.UserDetailsAuthenticated;
 import com.example.pwa_backend_api.repositories.UserRepo;
 
@@ -22,18 +21,15 @@ import jakarta.servlet.http.HttpServletResponse;
 public class SecurityFilter extends OncePerRequestFilter{
   @Autowired
   TokenService tokenService;
-  @Autowired
   UserRepo userRepo;
-  @Autowired
-  EntityManagerProvider entityManagerProvider;
 
   @Override
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException{
     String token = this.recoverToken(request);
     if(token != null){
       String email = tokenService.validateToken(token);
-      UserDetailsAuthenticated user = userRepo.findByEmail(email);
-      Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+      UserDetailsAuthenticated user = (UserDetailsAuthenticated) userRepo.findByEmail(email);
+      Authentication authentication = new UsernamePasswordAuthenticationToken(user, null);
       SecurityContextHolder.getContext().setAuthentication(authentication);
     }
     filterChain.doFilter(request, response);
