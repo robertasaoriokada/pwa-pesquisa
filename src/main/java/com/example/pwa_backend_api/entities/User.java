@@ -4,9 +4,10 @@ import java.sql.Timestamp;
 import java.util.Calendar;
 import java.util.Set;
 
-
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -51,6 +52,7 @@ public class User{
     this.email = email;
     this.password = password;
     this.forms = null;
+    this.role = UserRole.USER;
     this.created_at = new Timestamp(Calendar.getInstance().getTimeInMillis());
     this.updated_at = new Timestamp(Calendar.getInstance().getTimeInMillis());
   }

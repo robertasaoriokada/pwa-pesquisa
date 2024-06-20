@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -14,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import com.example.pwa_backend_api.dtos.RegisterDTO;
 import com.example.pwa_backend_api.entities.User;
+import com.example.pwa_backend_api.entities.UserDetailsAuthenticated;
 import com.example.pwa_backend_api.repositories.UserRepo;
 import com.example.pwa_backend_api.securityconfiguration.TokenService;
 
@@ -49,8 +49,12 @@ public class AuthService implements UserDetailsService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return userRepo.findByEmail(username);
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        UserDetails user = userRepo.findByEmail(email);
+        if (user == null) {
+            throw new UsernameNotFoundException("User not found");
+        }
+        return user;
     }
 
 }

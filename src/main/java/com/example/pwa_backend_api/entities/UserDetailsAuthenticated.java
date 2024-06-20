@@ -10,24 +10,27 @@ import org.springframework.security.core.userdetails.UserDetails;
 public class UserDetailsAuthenticated implements UserDetails {
   private final User user;
 
-  public UserDetailsAuthenticated(User user){
-    this.user = user;
+  public UserDetailsAuthenticated(User user) {
+      this.user = user;
   }
 
   @Override
   public Collection<? extends GrantedAuthority> getAuthorities() {
-    if(user.getRole() == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
-    else return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+      if (user.getRole() == UserRole.ADMIN) {
+          return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
+      } else {
+          return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+      }
   }
-
+  
   @Override
   public String getPassword() {
-    return user.getPassword();
+      return user.getPassword();
   }
 
   @Override
   public String getUsername() {
-    return user.getName();
+      return user.getEmail(); // Use email for username
   }
   
 }
